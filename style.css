@@ -1,0 +1,36 @@
+body{
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: 2fr 12fr 1fr;
+}
+header{
+    grid-column: 1/-1;
+    background-color: #e24747ad;
+}
+main{
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit ,minmax(200px, 1fr));
+    gap:20px;
+}
+.card{
+    background: rgba(35, 172, 35, 0.582);
+    max-height: 400px;
+}
+
+
+
+
+
+
+
+.side-bar{
+    grid-template-rows: 2/3;
+    background:rgba(169, 112, 216, 0.527);
+}
+footer{
+    grid-column: 1/-1;
+    background: #000;
+}
