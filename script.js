@@ -22,16 +22,6 @@ function displayBook(){
     })
 };
 
-let book1= new Book("The Wheel Of Time","Robert Jordan",654,"read");
-let book2= new Book("The Great Hunt","Robert Jordan",597,"read");
-let book3= new Book("Hobbit","J.R.R Tolkien",312,"read");
-let book4= new Book("Malzan The Book Of Fallen","Steven Ericson",610,"unred");
-
-addBookToLibrary(book1);
-addBookToLibrary(book2);
-addBookToLibrary(book3);
-addBookToLibrary(book4);
-
 function fillUpTheCard(card,book){
     let bookTitle=document.createElement("div");
     bookTitle.classList.add("title")
@@ -50,4 +40,23 @@ function fillUpTheCard(card,book){
     bookRead.innerHTML=book.read;
     card.appendChild(bookRead);
 }
-displayBook()
+function addAddButton(){
+    let buttonCard=document.createElement("div");
+    buttonCard.classList.add("button-card");
+    main.appendChild(buttonCard)
+    let addButton=document.createElement("button");
+    addButton.classList.add("add");
+    buttonCard.appendChild(addButton);
+}
+let book1= new Book("The Wheel Of Time","Robert Jordan",654,"read");
+let book2= new Book("The Great Hunt","Robert Jordan",597,"read");
+let book3= new Book("Hobbit","J.R.R Tolkien",312,"read");
+let book4= new Book("Malzan The Book Of Fallen","Steven Ericson",610,"unred");
+
+addBookToLibrary(book1);
+addBookToLibrary(book2);
+addBookToLibrary(book3);
+addBookToLibrary(book4);
+
+displayBook();
+addAddButton();
