@@ -1,14 +1,13 @@
 const myLibrary=[];
-
 function Book(name,author,pages,read){
     this.name=name;
     this.author=author;
-    this.pages=pages;
+    this.pages=+pages;
     if(read==true){
-        this.read="read";
+        this.read="Read";
     }
     else{
-        this.read="unread"
+        this.read="Unread"
     }
 };
 
@@ -17,16 +16,6 @@ function addBookToLibrary(book){
 };
 
 const main=document.querySelector("main");
-
-function displayBook(){
-    main.innerHTML="";
-    myLibrary.forEach(book =>{
-        let card = document.createElement("div")
-        card.classList.add("card")
-        fillUpTheCard(card,book)
-        main.appendChild(card)
-    })
-};
 
 function fillUpTheCard(card,book){
     let bookTitle=document.createElement("div");
@@ -45,18 +34,42 @@ function fillUpTheCard(card,book){
     bookRead.classList.add("read")
     bookRead.innerHTML=book.read;
     card.appendChild(bookRead);
+    let cardButton1=document.createElement("button");
+    cardButton1.classList.add("read-button")
+    cardButton1.innerHTML="&#10003;";
+    card.appendChild(cardButton1);
+    let cardButton2=document.createElement("button");
+    cardButton2.classList.add("remove-button");
+    cardButton2.innerHTML="Remove";
+    card.appendChild(cardButton2);
+    let index=myLibrary.indexOf(book)
+    cardButton1.setAttribute("id",index);
+    cardButton2.setAttribute("id",index);
 }
+
+function displayBook(){
+    main.innerHTML="";
+    myLibrary.forEach(book =>{
+        let card = document.createElement("div");
+        card.classList.add("card");
+        fillUpTheCard(card,book);
+        main.appendChild(card);
+    })
+};
+
 const buttonCard=document.createElement("div");
 const addButton=document.createElement("button");
 function addAddButton(){
-    buttonCard.classList.add("button-card");
+    buttonCard.classList.add("add-card-button");
     main.appendChild(buttonCard);
     addButton.classList.add("add");
+    addButton.innerHTML="+"
     buttonCard.appendChild(addButton);
 }
 
 addButton.addEventListener("click", ()=>{
     newBookForm.classList.add("toggle");
+    blur.classList.add("toggle");
 })
 
 const newName=document.getElementById("title");
@@ -65,23 +78,76 @@ const newPages=document.getElementById("pages")
 const newRead=document.getElementById("read")
 
 const newBookForm=document.getElementById("newBookForm")
+const blur=document.querySelector(".blur")
 newBookForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     let newBook= new Book(newName.value,newAuthor.value,newPages.value,newRead.checked)
     addBookToLibrary(newBook);
     displayBook();
+    addRemoveBookBtn();
+    closeAndClear();
     addAddButton();
+    displayInfo()
 }) 
 
 const cancel=document.getElementById("cancel")
-cancel.addEventListener("click", ()=>{
+cancel.addEventListener("click", closeAndClear)
+
+function closeAndClear(){
     newName.value="";
     newAuthor.value="";
     newPages.value="";
-    newBookForm.classList.remove("toggle")
-})
+    newBookForm.classList.remove("toggle");
+    blur.classList.remove("toggle");
+}
+function addRemoveBookBtn(){
+    let removeBtn =document.querySelectorAll(".remove-button")
+    removeBtn.forEach(btn=>{btn.addEventListener("click", function(){
+        myLibrary.splice(this.id,1)
+        displayBook();
+        addRemoveBookBtn()
+        addReadBookBtn()
+        addAddButton();
+        displayInfo()
+})})}
 
+Book.prototype.toggleRead=function() {
+    if (this.read=="Read"){
+        this.read="Unread"
+    }
+    else if(this.read=="Unread"){
+        this.read="Read"
+    }
+}
 
+function addReadBookBtn(){
+    let readBtn=document.querySelectorAll(".read-button")
+    readBtn.forEach(btn=>{btn.addEventListener("click",function(){
+        myLibrary[this.id].toggleRead();
+        displayBook();
+        addRemoveBookBtn();
+        addReadBookBtn();
+        addAddButton();
+        displayInfo()
+    })})
+}
+const booksInfoDsp=document.querySelector(".books-info");
+const booksReadDsp=document.querySelector(".read-info");
+const booksPagesDsp=document.querySelector(".pages-info");
+function displayInfo(){
+    booksInfo=myLibrary.length;
+    let booksRead = 0;
+    let booksPages = 0;
+    myLibrary.forEach(book =>{
+        if (book.read=="Read"){
+            booksRead+=1
+            booksPages+=book.pages;
+        }
+    })
+    booksInfoDsp.innerHTML=booksInfo;
+    booksReadDsp.innerHTML=booksRead;
+    booksPagesDsp.innerHTML=booksPages;
+}
 
 let book1= new Book("The Wheel Of Time","Robert Jordan",654,true);
 let book2= new Book("The Great Hunt","Robert Jordan",597,false);
@@ -95,3 +161,6 @@ addBookToLibrary(book4);
 
 displayBook();
 addAddButton();
+addRemoveBookBtn();
+addReadBookBtn();
+displayInfo();
